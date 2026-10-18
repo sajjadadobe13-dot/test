@@ -109,6 +109,25 @@ peerdesk/
 | [`docs/04-test-plan.md`](docs/04-test-plan.md) | automated coverage + manual checklist |
 | [`docs/05-deployment.md`](docs/05-deployment.md) | build, package, sign, CI, release |
 | [`docs/user-guide.md`](docs/user-guide.md) | end-user walkthrough |
+| [`docs/06-mobile.md`](docs/06-mobile.md) | Android app requirements, architecture, limits, APK build |
+
+## Mobile (Android)
+
+A Flutter companion app lives in [`mobile/`](mobile/) and speaks the **same
+encrypted protocol**, so a phone and a PC interoperate directly:
+
+- **📱 → 💻 (primary):** the phone connects to and controls a PC — view,
+  touch-as-mouse, on-screen keyboard, and file push.
+- **💻 → 📱 (secondary):** a PC views the phone's screen via Android
+  MediaProjection (view-only — Android blocks remote input injection into other
+  apps).
+
+The Dart↔Python crypto interop is verified byte-for-byte in the mobile test
+suite. The installable **APK** is produced by CI
+([`.github/workflows/peerdesk-android.yml`](../.github/workflows/peerdesk-android.yml))
+and downloaded from the repo's **Actions → Artifacts**, because compiling an
+Android APK needs Google's servers that the cloud sandbox blocks. See
+[`mobile/README.md`](mobile/README.md).
 
 ## Responsible use
 
