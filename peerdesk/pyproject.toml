@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "peerdesk"
+version = "1.0.0"
+description = "Consent-first remote desktop and file sharing"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "PeerDesk contributors" }]
+keywords = ["remote-desktop", "remote-control", "file-transfer", "vnc"]
+dependencies = [
+    "cryptography>=42.0",
+    "Pillow>=10.0",
+    "mss>=9.0",
+    "pynput>=1.7",
+    "pyperclip>=1.8",
+]
+
+[project.optional-dependencies]
+dev = ["pyinstaller>=6.3"]
+
+[project.scripts]
+peerdesk = "peerdesk.__main__:main"
+
+[project.gui-scripts]
+peerdesk-gui = "peerdesk.__main__:main"
+
+[tool.setuptools]
+packages = ["peerdesk", "peerdesk.ui"]
+
+[tool.setuptools.package-data]
+peerdesk = ["assets/*"]

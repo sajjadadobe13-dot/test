@@ -1,0 +1,5 @@
+# Development / build tooling (in addition to requirements.txt)
+-r requirements.txt
+pyinstaller>=6.3           # bundle a standalone Windows executable
+# The unit test suite uses only the Python standard library (unittest),
+# so no test runner is required. 'python -m unittest' is enough.
