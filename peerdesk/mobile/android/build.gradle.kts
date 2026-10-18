@@ -27,23 +27,34 @@ subprojects {
 // DSL uses the `compileSdk` property setter; older ones a compileSdkVersion
 // method).
 subprojects {
-    afterEvaluate {
-        val android = project.extensions.findByName("android") ?: return@afterEvaluate
-        val cls = android.javaClass
-        val attempts: List<() -> Unit> = listOf(
-            { cls.getMethod("setCompileSdk", java.lang.Integer::class.java).invoke(android, 36) },
-            { cls.getMethod("compileSdkVersion", Int::class.javaPrimitiveType).invoke(android, 36) },
-            { cls.getMethod("compileSdkVersion", String::class.java).invoke(android, "android-36") },
-        )
-        for (attempt in attempts) {
-            try {
-                attempt()
-                println("[peerdesk] forced compileSdk=36 on :${project.name}")
-                break
-            } catch (_: Throwable) {
-                // try the next shape
+    val forceCompileSdk = {
+        val android = project.extensions.findByName("android")
+        if (android != null) {
+            val cls = android.javaClass
+            val attempts: List<() -> Unit> = listOf(
+                { cls.getMethod("setCompileSdk", java.lang.Integer::class.java).invoke(android, 36) },
+                { cls.getMethod("compileSdkVersion", Int::class.javaPrimitiveType).invoke(android, 36) },
+                { cls.getMethod("compileSdkVersion", String::class.java).invoke(android, "android-36") },
+            )
+            for (attempt in attempts) {
+                try {
+                    attempt()
+                    println("[peerdesk] forced compileSdk=36 on :${project.name}")
+                    break
+                } catch (_: Throwable) {
+                    // try the next method shape
+                }
             }
         }
+    }
+    // Some subprojects (notably :app, pulled in early by evaluationDependsOn)
+    // are already evaluated by the time this runs, so afterEvaluate would throw.
+    // Set directly in that case; otherwise defer until the subproject's own
+    // build script has run (so our value wins over the plugin's default).
+    if (state.executed) {
+        forceCompileSdk()
+    } else {
+        afterEvaluate { forceCompileSdk() }
     }
 }
 
