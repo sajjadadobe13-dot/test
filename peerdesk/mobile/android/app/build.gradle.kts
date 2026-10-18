@@ -6,7 +6,10 @@ plugins {
 
 android {
     namespace = "com.peerdesk.peerdesk_mobile"
-    compileSdk = flutter.compileSdkVersion
+    // Some plugins (file_picker -> flutter_plugin_android_lifecycle) require
+    // compiling against API 36+, so pin it explicitly rather than inheriting
+    // Flutter's default.
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
