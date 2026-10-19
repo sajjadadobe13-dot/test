@@ -1,6 +1,0 @@
-# PeerDesk runtime dependencies
-cryptography>=42.0        # X25519 key exchange, PBKDF2, authenticated encryption
-Pillow>=10.0              # image handling, JPEG tile encode/decode, Tk display
-mss>=9.0                  # fast cross-platform screen capture (host)
-pynput>=1.7               # keyboard/mouse injection (host)
-pyperclip>=1.8            # optional clipboard sync (safe to omit)
